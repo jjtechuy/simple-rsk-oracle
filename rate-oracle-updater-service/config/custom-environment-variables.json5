@@ -1,0 +1,33 @@
+{
+  port: 'ROS_PORT',
+
+  rateUpdateThreshold: 'ROS_RATE_UPDATE_THRESHOLD',
+  rateUpdateInterval: 'ROS_RATE_UPDATE_INTERVAL',
+
+  oracle: {
+    contractAddress: 'ROS_ORACLE_CONTRACT_ADDRESS',
+    account: 'ROS_ORACLE_PROVIDER_ACCOUNT'
+  },
+
+  blockchain: {
+    provider: 'ROS_NODE_URL',
+    networkId: 'ROS_NETWORK_ID',
+  },
+
+  rateApi: {
+    url: 'ROS_RATE_API_URL',
+    token: 'ROS_RATE_API_TOKEN',
+    ratePollInterval: 'ROS_RATE_API_POLL_INTERVAL',
+  },
+
+  cors: {
+    origin: "ROS_CORS_ORIGIN",
+    methods: "ROS_CORS_METHODS"
+  },
+
+  log: {
+    level: "LOG_LEVEL",
+    filter: "LOG_FILTER",
+    path: "LOG_PATH"
+  }
+}
