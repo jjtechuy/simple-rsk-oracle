@@ -1,5 +1,11 @@
 const SimpleRskOracle = artifacts.require("SimpleRskOracle");
 
-module.exports = function(deployer) {
-  deployer.deploy(SimpleRskOracle);
+const PROVIDER_ACCOUNT = process.env['ORACLE_PROVIDER_ACCOUNT']
+
+module.exports = async function(deployer) {
+  await deployer
+      .deploy(SimpleRskOracle)
+      .then(async (ins) => {
+        return await ins.addToWhitelist(PROVIDER_ACCOUNT)
+      })
 };
