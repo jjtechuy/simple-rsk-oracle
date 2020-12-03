@@ -2,6 +2,7 @@ import config from 'config'
 import { Account } from 'web3-core'
 import Eth, { TransactionReceipt } from 'web3-eth'
 import { Contract } from 'web3-eth-contract'
+import BigNumber from 'bignumber.js'
 import { AbiItem } from 'web3-utils'
 
 import RateOracleAbi from './abi/SimpleRskOracle.json'
@@ -44,8 +45,7 @@ export class RateOracleContract {
         logger.error('Error getting gas price, error:', error)
         throw error
       })
-    // TODO add rate conversion
-    const tx = this.contract.methods.updatePrice(Math.round(rate), Date.now())
+    const tx = this.contract.methods.updatePrice(new BigNumber(rate * 10 ** 18), Date.now())
     const gas = Math.ceil(await tx.estimateGas({
       from: this.account.address,
       gasPrice
