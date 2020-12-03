@@ -7,12 +7,12 @@
 
   oracle: {
     contractAddress: '0x59d3631c86BbE35EF041872d502F218A39FBa150',
-    account: '0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d'
+    account: '0xc85ef7d79691fe79573b1a7064c19c1a9819ebdbd1faaab1a8ec92344438aaf4'
   },
 
   blockchain: {
-    provider: "ws://127.0.0.1:8545/",
-    networkId: 8545,
+    provider: "ws://localhost:4445/websocket",
+    networkId: 33,
   },
 
   rateApi: {

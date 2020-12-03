@@ -1,0 +1,1 @@
+docker build -t regtest -f Dockerfile-rskj . 
