@@ -39,9 +39,7 @@
     "prepack": "tasegir run --watch node_modules/.bin/oclif-dev -- manifest && sed -i '' 's#\"./src/cli\"#\"./lib/cli\"#g' package.json",
     "postpack": "sed -i '' 's#\"./lib/cli\"#\"./src/cli\"#g' package.json",
     "bin": "tasegir run ./bin/run -- ",
-    "init": "./init.sh",
     "compile": "tasegir compile",
-    "ipfs": "cross-env IPFS_PATH='./.repos/upload' ipfs",
     "docs": "typedoc --mode modules --excludeNotExported --readme none --excludePrivate  --tsconfig ./node_modules/tasegir/src/config/tsconfig.json --exclude 'src/rate-provider/*,test/**/*' --out docs src",
     "types-check": "tasegir types-check",
     "lint": "tasegir lint",
@@ -49,7 +47,6 @@
     "test": "npm run test:unit && npm run test:integration",
     "test:integration": "cross-env ALLOW_CONFIG_MUTATIONS=true tasegir test --target node --files ./test/integration/**/*.spec.ts --files ./test/integration/**/**/*.spec.ts",
     "test:unit": "cross-env ALLOW_CONFIG_MUTATIONS=true tasegir test --target node --files ./test/unit/*.spec.ts --files ./test/unit/**/*.spec.ts --files ./test/unit/**/**/*.spec.ts",
-    "start": "tasegir run --watch ./src/index.ts",
     "tasegir:link": "ln -s ./node_modules/tasegir/src/config/tsconfig.json ./tsconfig.json && ln -s ./node_modules/tasegir/src/config/eslintrc.js ./.eslintrc.js"
   },
   "dependencies": {
