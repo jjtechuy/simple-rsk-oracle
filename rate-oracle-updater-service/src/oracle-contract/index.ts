@@ -10,7 +10,7 @@ import { loggingFactory } from '../logger'
 import { waitForReceipt } from './utils'
 
 const logger = loggingFactory('oracle-contract')
-const WEI = 10 ** 18
+const WEI = new BigNumber(10).pow(18)
 
 export class RateOracleContract {
   private readonly eth: Eth
@@ -46,7 +46,7 @@ export class RateOracleContract {
         logger.error('Error getting gas price, error:', error)
         throw error
       })
-    logger.debug(`Send updateRate TX with rate ${new BigNumber(rate).times(WEI).toString()}, original rate = ${rate}`)
+    logger.debug(`Send updateRate TX with rate ${new BigNumber(rate).times(WEI).toString(10)}, original rate = ${rate}`)
     const tx = this.contract.methods.updatePrice(new BigNumber(rate).times(WEI), Date.now())
     const gas = Math.ceil(await tx.estimateGas({
       from: this.account.address,
