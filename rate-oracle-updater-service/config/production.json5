@@ -7,7 +7,6 @@
 
   oracle: {
     contractAddress: '',
-    account: '' // private key
   },
 
   blockchain: {
@@ -17,7 +16,7 @@
 
   rateApi: {
     url: 'https://min-api.cryptocompare.com/data/pricemulti',
-    token: 'f9ac67cfaa4ab004ab359a0faf76cea480b5e91c57bbf18c598ccc7ce2aeb64f',
+    token: '',
     ratePollInterval: 60000 // every 1 minute
   }
 }

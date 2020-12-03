@@ -2,7 +2,7 @@
 {
   port: 3030,
 
-  rateUpdateThreshold: 0.035,
+  rateUpdateThreshold: 0.01,
   rateUpdateInterval: 20000, // every 20 sec
 
   oracle: {
@@ -17,7 +17,7 @@
 
   rateApi: {
     url: 'https://min-api.cryptocompare.com/data/pricemulti',
-    token: 'f9ac67cfaa4ab004ab359a0faf76cea480b5e91c57bbf18c598ccc7ce2aeb64f',
+    token: '',
     ratePollInterval: 5000
   }
 }
