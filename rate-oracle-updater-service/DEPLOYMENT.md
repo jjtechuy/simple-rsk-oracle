@@ -16,10 +16,9 @@ For a custom config create JSON file which follows scheme defined [here](./src/d
 The easiest way is to mount the config directly into the Docker container.
 
 ```
-$ git clone https://github.com/rsksmart/rif-marketplace-upload-service.git
-$ cd ./rif-marketplace-upload-service
-$ docker build -t rif-marketplace-upload-service .
-$ docker run -v <path-to-the-config>:/srv/app/config/local.json5 -id rif-marketplace-upload-service --config local
+$ cd ./rate-oracle-updater-service
+$ docker build -t rate-oracle-updater-service .
+$ docker run -v <path-to-the-config>:/srv/app/config/local.json5 -id rate-oracle-updater-service --config local
 ```
 
 ## UNIX environment
@@ -31,26 +30,12 @@ $ docker run -v <path-to-the-config>:/srv/app/config/local.json5 -id rif-marketp
 
 ### Steps
 
-#### 1. Install
-
-Install the Oracle Rate Updater service NPM package
-
-```
-npm install -g @rsksmart/rif-marketplace-upload-service
-```
-
-#### 2. Run the Service
+#### 1. Run the Service
 
 **Change path to your Custom Config in following commands**
 
-First synchronize database scheme:
+run the server:
 
 ```bash
-$ rif-marketplace-upload-service db-migration --up --config ./path/to/custom_config
-```
-
-Finally, run the server:
-
-```bash
-$ rif-marketplace-upload-service start --config ./path/to/custom_config
+$ npm run bin -- start --config ./path/to/custom_config
 ```
