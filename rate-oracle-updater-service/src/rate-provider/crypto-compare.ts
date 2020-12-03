@@ -15,7 +15,7 @@ export class CryptoCompareProvider implements RateProvider {
     this.token = token
   }
 
-  public async fetchRate (from: string = 'BTC', to: string = 'USD'): Promise<number> {
+  public async fetchRate (from = 'BTC', to = 'USD'): Promise<number> {
     logger.debug(`Retrieving rate for ${from} to ${to}`)
 
     try {

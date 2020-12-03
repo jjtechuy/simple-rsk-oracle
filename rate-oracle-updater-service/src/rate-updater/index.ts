@@ -10,20 +10,29 @@ import { OracleUpdateEvent, RateUpdateTrigger } from './update-trigger'
 
 const logger = loggingFactory('rate-updater')
 
-const upload: RateUpdaterService = {
+const rateUpdaterService: RateUpdaterService = {
   async initialize (app: Application): Promise<{ stop: () => Promise<void> }> {
     await waitForReadyApp(app)
     const rateProviderManager = app.get('rateProvider') as RateProviderManager
     const eth = app.get('eth') as Eth
-    const oracleContract = new RateOracleContract(eth, config.get<string>('oracle.account'))
+
+    if (!config.has('oracle.account')) {
+      throw new Error('Oracle provider account not configured!')
+    }
 
     if (!config.has('rateUpdateThreshold')) {
       throw new Error('Rate update threshold not configured!')
     }
 
+    if (!config.has('rateUpdateInterval')) {
+      throw new Error('Rate update interval not configured!')
+    }
+
     if (!config.has('rateApi.ratePollInterval')) {
       throw new Error('Rate poll interval not configured!')
     }
+
+    const oracleContract = new RateOracleContract(eth, config.get<string>('oracle.account'))
 
     const rateUpdateTrigger = new RateUpdateTrigger(
       rateProviderManager,
@@ -35,11 +44,12 @@ const upload: RateUpdaterService = {
     rateUpdateTrigger.on(
       OracleUpdateEvent,
       async (rate: number) => {
-        logger.info(`Need to update Oracle with rate ${rate}`)
-        logger.debug(await oracleContract.updateRate(rate))
+        logger.info(`Updating Oracle with rate ${rate}`)
+        await oracleContract.updateRate(rate)
       }
     )
 
+    // Run polling job for BTC/USD
     await rateUpdateTrigger.run('BTC', 'USD')
 
     return {
@@ -51,4 +61,4 @@ const upload: RateUpdaterService = {
   }
 }
 
-export default upload
+export default rateUpdaterService

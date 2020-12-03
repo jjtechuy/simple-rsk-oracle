@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events'
-import { loggingFactory } from '../logger'
 
+import { loggingFactory } from '../logger'
 import { RateProviderManager } from '../rate-provider'
 
 const logger = loggingFactory('rate-updater-trigger')
@@ -12,13 +12,13 @@ export class RateUpdateTrigger extends EventEmitter {
   private readonly ratePollInterval: number
   private readonly updateInterval: number
   private intervalId?: NodeJS.Timeout
-  private lastUpdate: number = 0
+  private lastUpdate = 0
 
   constructor (
-      rateManager: RateProviderManager,
-      rateUpdateThreshold: number,
-      pollInterval: number,
-      updateInterval: number
+    rateManager: RateProviderManager,
+    rateUpdateThreshold: number,
+    pollInterval: number,
+    updateInterval: number
   ) {
     super()
     this.rateProviderManager = rateManager
@@ -27,12 +27,13 @@ export class RateUpdateTrigger extends EventEmitter {
     this.ratePollInterval = pollInterval
   }
 
-  private async checkRate (from: string, to: string) {
+  private async checkRate (from: string, to: string): Promise<void> {
     const rate = await this.rateProviderManager.fetchRate(from, to)
-    // Update oracle if no rate was set or reach update interval
+
+    // Update oracle if reach update interval
     if (Date.now() - this.lastUpdate >= this.updateInterval) {
       this.lastUpdate = Date.now()
-      logger.info('Update oracle for interval')
+      logger.info('Trigger update oracle for interval')
       this.emit(OracleUpdateEvent, rate)
       return
     }
@@ -41,23 +42,23 @@ export class RateUpdateTrigger extends EventEmitter {
     const { current, previous } = this.rateProviderManager.getLastRate(from, to)
     const percentageChanges = Math.abs((current - previous) / previous * 100)
 
-    if (percentageChanges > this.updateThreshold) {
-      logger.info(`Update oracle for threshold, changes is ${percentageChanges}% (current = ${current}, previous = ${previous})`)
+    if (percentageChanges >= this.updateThreshold) {
+      logger.info(`Trigger update oracle for threshold, changes is ${percentageChanges}% (current = ${current}, previous = ${previous})`)
       this.emit(OracleUpdateEvent, rate)
       this.lastUpdate = Date.now()
     }
   }
 
-  async run (from: string, to: string) {
-    const rate = await this.rateProviderManager.fetchRate(from ,to)
+  async run (from: string, to: string): Promise<void> {
+    const rate = await this.rateProviderManager.fetchRate(from, to)
     this.lastUpdate = Date.now()
     this.emit(OracleUpdateEvent, rate)
 
     this.intervalId = setInterval(
-        async () => {
-          await this.checkRate(from ,to)
-        },
-        this.ratePollInterval
+      async () => {
+        await this.checkRate(from, to)
+      },
+      this.ratePollInterval
     )
   }
 

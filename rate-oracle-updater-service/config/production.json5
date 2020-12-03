@@ -1,1 +1,23 @@
-{}
+// For full syntax see /src/types.ts::Config interface
+{
+  port: 3030,
+
+  rateUpdateThreshold: 0.5,
+  rateUpdateInterval: 7200000, // every 2 hours
+
+  oracle: {
+    contractAddress: '',
+    account: '' // private key
+  },
+
+  blockchain: {
+    provider: "ws://127.0.0.1:8545/",
+    networkId: 8545,
+  },
+
+  rateApi: {
+    url: 'https://min-api.cryptocompare.com/data/pricemulti',
+    token: 'f9ac67cfaa4ab004ab359a0faf76cea480b5e91c57bbf18c598ccc7ce2aeb64f',
+    ratePollInterval: 60000 // every 1 minute
+  }
+}

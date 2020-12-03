@@ -2,23 +2,9 @@
 {
   port: 3030,
 
-  rateUpdateThreshold: 0.035,
-  rateUpdateInterval: 20000, // every 20 sec
-
-  oralce: {
-    contractAddress: '0xE1c08596DEb9465184820f2815182157db42757B',
-    account: '0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d'
-  },
-
-  blockchain: {
-    provider: "ws://127.0.0.1:8545/",
-    networkId: 8545,
-  },
-
   rateApi: {
     url: 'https://min-api.cryptocompare.com/data/pricemulti',
-    token: 'f9ac67cfaa4ab004ab359a0faf76cea480b5e91c57bbf18c598ccc7ce2aeb64f',
-    ratePollInterval: 5000
+    ratePollInterval: 7200000 // every 2 hours
   },
 
   // CORS setting, please consult https://expressjs.com/en/resources/middleware/cors.html for more details

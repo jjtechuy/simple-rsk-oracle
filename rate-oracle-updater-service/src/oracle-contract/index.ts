@@ -4,36 +4,11 @@ import Eth, { TransactionReceipt } from 'web3-eth'
 import { Contract } from 'web3-eth-contract'
 import { AbiItem } from 'web3-utils'
 
+import RateOracleAbi from './abi/SimpleRskOracle.json'
 import { loggingFactory } from '../logger'
+import { waitForReceipt } from './utils'
 
 const logger = loggingFactory('oracle-contract')
-
-const TIMEOUT_LIMIT = 120000
-const POLLING_INTERVAL = 2000
-
-function waitForReceipt (
-  txHash: string,
-  eth: Eth
-): Promise<TransactionReceipt> {
-  let timeElapsed = 0
-  return new Promise<TransactionReceipt>((resolve, reject) => {
-    const checkInterval = setInterval(async () => {
-      timeElapsed += POLLING_INTERVAL
-      const receipt = await eth.getTransactionReceipt(txHash)
-
-      if (receipt != null) {
-        clearInterval(checkInterval)
-        resolve(receipt)
-      }
-
-      if (timeElapsed > TIMEOUT_LIMIT) {
-        reject(
-          new Error('Transaction receipt could not be retrieved - Timeout')
-        )
-      }
-    }, POLLING_INTERVAL)
-  })
-}
 
 export class RateOracleContract {
   private readonly eth: Eth
@@ -44,7 +19,7 @@ export class RateOracleContract {
     this.eth = eth
     this.account = this.eth.accounts.privateKeyToAccount(privateKey)
     this.contract = new eth.Contract(
-        [] as AbiItem[],
+        RateOracleAbi.abi as AbiItem[],
         config.get<string>('oracle.contractAddress')
     )
   }
@@ -69,7 +44,8 @@ export class RateOracleContract {
         logger.error('Error getting gas price, error:', error)
         throw error
       })
-    const tx = this.contract.methods.updatePrice(rate, Date.now())
+    // TODO add rate conversion
+    const tx = this.contract.methods.updatePrice(Math.round(rate), Date.now())
     const gas = Math.ceil(await tx.estimateGas({
       from: this.account.address,
       gasPrice
@@ -84,11 +60,18 @@ export class RateOracleContract {
           try {
             if (err) throw err
             const receipt = await waitForReceipt(txHash, this.eth)
+            logger.debug('Receipt for oracle updateRate transaction', receipt)
             return resolve(receipt)
           } catch (e) {
+            logger.error('Oracle updateRate transaction error', e)
             return reject(e)
           }
         })
     })
+  }
+
+  getPricing (): Promise<any> {
+    const tx = this.contract.methods.getPricing()
+    return tx.call()
   }
 }
