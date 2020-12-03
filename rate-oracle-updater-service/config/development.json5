@@ -7,7 +7,7 @@
 
   oracle: {
     contractAddress: '0x59d3631c86BbE35EF041872d502F218A39FBa150',
-    account: '0xc85ef7d79691fe79573b1a7064c19c1a9819ebdbd1faaab1a8ec92344438aaf4'
+    account: '0x68735111a18c00dcc5088ec2016fdc6fa67c646f3c73dddc25ae94a830331b94'
   },
 
   blockchain: {

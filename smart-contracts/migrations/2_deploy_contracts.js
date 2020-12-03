@@ -1,6 +1,6 @@
 const SimpleRskOracle = artifacts.require("SimpleRskOracle");
 
-const PROVIDER_ACCOUNT = "0xc85ef7d79691fe79573b1a7064c19c1a9819ebdbd1faaab1a8ec92344438aaf4"
+const PROVIDER_ACCOUNT = "0xaa05714c5a31eba90dcdaad6f492c87b8b3d8583"
 
 module.exports = async function(deployer) {
   await deployer
